@@ -64,11 +64,19 @@
         }
 
         .discount-title {
-            font-size: 28px;
-            font-weight: 600;
-            color: #333;
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .discount-subtitle {
+            font-size: 18px;
+            color: #555;
             margin-bottom: 30px;
-            line-height: 1.4;
+            font-weight: 400;
+            line-height: 1.5;
         }
 
         .discount-code {
@@ -85,11 +93,25 @@
             box-shadow: 0 4px 12px rgba(78, 91, 166, 0.08);
         }
 
-        .discount-subtitle {
+        .discount-info {
             font-size: 16px;
             color: #666;
             margin-top: 25px;
-            font-weight: 400;
+            line-height: 1.6;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .discount-expiry {
+            font-size: 15px;
+            color: #31708f;
+            font-weight: 500;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background-color: #d9edf7;
+            border-left: 4px solid #5bc0de;
+            border-radius: 4px;
         }
 
         .copy-button {
@@ -134,9 +156,18 @@
 </div>
 
 <div id="discountMessage" class="discount-message">
-    <div class="discount-title">Thank you for visiting rotki at Devconnect ARG!<br>Here is your discount code:</div>
+    <div class="discount-title">Thank you for visiting rotki<br>at Devconnect ARG!</div>
+    <div class="discount-subtitle">Here is your exclusive discount code:</div>
     <div id="discountCode" class="discount-code"></div>
     <button id="copyButton" class="copy-button">Copy Code</button>
+    <div class="discount-info">
+        Use this code when purchasing a rotki premium subscription at <strong>rotki.com</strong>.
+        Simply enter it during checkout to receive your discount. <br/>
+        This code is valid for a single use.
+    </div>
+    <div class="discount-expiry">
+        ⚠️ This code expires on December 19th, 2025
+    </div>
 </div>
 
 <div class="qr-container">
