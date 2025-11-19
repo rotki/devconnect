@@ -13,8 +13,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-start;
             height: 100vh;
+        }
+
+        body.discount-mode {
+            justify-content: center;
         }
 
         .logo-container {
@@ -42,6 +46,83 @@
             color: #999;
             font-size: 18px;
         }
+
+        .discount-message {
+            display: none;
+            text-align: center;
+            padding: 50px 40px;
+            margin: 40px auto;
+            max-width: 700px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 10px 40px rgba(78, 91, 166, 0.15);
+        }
+
+        .discount-message.visible {
+            display: block;
+        }
+
+        .discount-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        .discount-code {
+            font-size: 48px;
+            font-weight: bold;
+            color: #4e5ba6;
+            font-family: 'Courier New', monospace;
+            padding: 25px 35px;
+            background-color: #f5f6fa;
+            border: 2px dashed #4e5ba6;
+            border-radius: 12px;
+            margin-top: 20px;
+            letter-spacing: 3px;
+            box-shadow: 0 4px 12px rgba(78, 91, 166, 0.08);
+        }
+
+        .discount-subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-top: 25px;
+            font-weight: 400;
+        }
+
+        .copy-button {
+            margin-top: 30px;
+            padding: 15px 40px;
+            background-color: #4e5ba6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(78, 91, 166, 0.2);
+        }
+
+        .copy-button:hover {
+            background-color: #3d4a85;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(78, 91, 166, 0.3);
+        }
+
+        .copy-button:active {
+            transform: translateY(0);
+        }
+
+        .copy-button.copied {
+            background-color: #28a745;
+        }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -50,6 +131,12 @@
 <div class="logo-container">
     <img src="rotkiLogo.png" alt="Rotki Logo" width="128px" height="128px">
     <div class="rotki-text">rotki</div>
+</div>
+
+<div id="discountMessage" class="discount-message">
+    <div class="discount-title">Thank you for visiting rotki at Devconnect ARG!<br>Here is your discount code:</div>
+    <div id="discountCode" class="discount-code"></div>
+    <button id="copyButton" class="copy-button">Copy Code</button>
 </div>
 
 <div class="qr-container">
@@ -66,6 +153,65 @@
 </div>
 
 <div class="footer">Scan to learn more</div>
+
+<script>
+    // Check for discount query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const discountCode = urlParams.get('discount');
+
+    if (discountCode) {
+        // Show the discount message
+        const discountMessage = document.getElementById('discountMessage');
+        const discountCodeElement = document.getElementById('discountCode');
+        const qrContainer = document.querySelector('.qr-container');
+        const footer = document.querySelector('.footer');
+        const copyButton = document.getElementById('copyButton');
+
+        discountCodeElement.textContent = discountCode;
+        discountMessage.classList.add('visible');
+
+        // Hide QR code and footer
+        qrContainer.classList.add('hidden');
+        footer.classList.add('hidden');
+
+        // Enable centered discount mode
+        document.body.classList.add('discount-mode');
+
+        // Copy button functionality
+        copyButton.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(discountCode);
+                copyButton.textContent = 'Copied!';
+                copyButton.classList.add('copied');
+
+                setTimeout(() => {
+                    copyButton.textContent = 'Copy Code';
+                    copyButton.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = discountCode;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    copyButton.textContent = 'Copied!';
+                    copyButton.classList.add('copied');
+
+                    setTimeout(() => {
+                        copyButton.textContent = 'Copy Code';
+                        copyButton.classList.remove('copied');
+                    }, 2000);
+                } catch (err2) {
+                    console.error('Fallback copy failed:', err2);
+                }
+                document.body.removeChild(textArea);
+            }
+        });
+    }
+</script>
 
 </body>
 </html>
